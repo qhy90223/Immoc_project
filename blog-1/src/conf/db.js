@@ -1,7 +1,4 @@
 const env=process.env.NODE_ENV//环境变量
-
-
-
 let MYSQL_CONF 
 
 if(env === 'dev'){
@@ -23,6 +20,5 @@ if(env === 'production'){
     }
 }
 module.exports={
-    
     MYSQL_CONF
 }
