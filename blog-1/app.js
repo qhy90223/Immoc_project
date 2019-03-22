@@ -12,9 +12,9 @@ const getPostData = (req) => {
             return
         }
         let postData=""
-        console.log('postData',postData);
+        
         req.on('data',chunk => {
-            console.log('chunk',chunk);
+            
             
             postData+= chunk
         })
@@ -23,7 +23,7 @@ const getPostData = (req) => {
                 reslove({})
                 return
             }
-            console.log(postData,'postdata');
+           
             
            reslove(JSON.parse(postData)) 
         })

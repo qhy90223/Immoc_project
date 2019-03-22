@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
     "production": "cross-env NODE_ENV=production nodemon ./bin/www.js"
-    
   },
   "keywords": [],
   "author": "",
@@ -15,5 +14,8 @@
   "devDependencies": {
     "cross-env": "^5.2.0",
     "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "mysql": "^2.16.0"
   }
 }

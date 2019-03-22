@@ -5,12 +5,24 @@ const {
   updateBlob,
   delBlob
 } = require('../controller/blob')
+const {SuccessModel,ErrorModel}=require('../model/resModel')
 const handleBlobRouter=(req)=>{
   const {method,path,query}=req
-  console.log(method,path);
+  
   if(method==='GET'&&path==="/api/blog/list"){
       const {author}=req.query
-      return getBlobList(author)
+      const getBlobResult=getBlobList(author)
+      console.log(getBlobResult,'getBlobResult');
+      
+      return getBlobResult.then((data)=>{
+        console.log(data,'data');
+        
+        if(data){
+         return new SuccessModel(JSON.parse(data))
+        }else{
+          return new ErrorModel(data)
+        }
+      })
   }
   if(method==='GET'&&path==="/api/blog/detail"){
     const id=query.id

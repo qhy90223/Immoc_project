@@ -1,11 +1,13 @@
 
-const {SuccessModel,ErrorModel}=require('../model/resModel')
+
+const {exec} = require('../db/mysql')
 const getBlobList=(author)=>{
   if(author==='zhangsan'){
-    return new SuccessModel([
-      {title:"标题1",content:"内容1"},
-      {title:"标题2",content:"内容2"}
-    ],"获取列表成功")
+    const sql="select * from blogs;"
+    return exec(sql)
+    
+    
+    
   }else{
     return new ErrorModel("获取列表失败")
   }

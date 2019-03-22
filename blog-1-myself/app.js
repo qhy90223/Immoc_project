@@ -11,8 +11,6 @@ const getPostBody= (req) => {
       resolve({})
       return
     }
-   
-    
     if(req.headers['content-type']!=='application/json'){
       resolve({})
       return
@@ -38,13 +36,14 @@ const handleServer =(req,res) => {
   req.query=querystring.parse(url.split('?')[1]) 
   getPostBody(req).then(postData => {
     req.body=postData
-    console.log(req.body,'req.body');
-    
-    const blobRouter=handleBlobRouter(req)
-    if(blobRouter){
-      res.end(JSON.stringify(blobRouter))
-      return
+    const blobRouterResult=handleBlobRouter(req)
+    if(blobRouterResult){
+      blobRouterResult.then(result =>{
+        res.end(JSON.stringify(result))
+      })
+    return
     }
+    
     const userRouter=handleUserRouter(req)
     
     if(userRouter){
