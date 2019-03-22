@@ -15,7 +15,8 @@ const getPostBody= (req) => {
       resolve({})
       return
     }
-    console.log(111);
+    console.log(112);
+    
     
     req.on('data',chunk => {
       postBody+=chunk
