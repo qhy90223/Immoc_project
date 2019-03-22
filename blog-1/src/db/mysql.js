@@ -9,6 +9,7 @@ const con = mysql.createConnection(MYSQL_CONF)
 //开始连接
 
 con.connect()
+console.log(1);
 
 //同一执行sql的函数
 
