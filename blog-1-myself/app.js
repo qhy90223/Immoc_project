@@ -1,5 +1,3 @@
-
-
 const {handleBlobRouter} = require('./src/router/blob')
 const {handleUserRouter} = require('./src/router/user')
 const querystring=require('querystring')
@@ -15,20 +13,21 @@ const getPostBody= (req) => {
       resolve({})
       return
     }
-    console.log(1123);
-    
-    
     req.on('data',chunk => {
+   
+      
       postBody+=chunk
     })
     req.on('end',()=>{
       if(!postBody){
         return resolve({})
       }else{
-        return resolve(postBody)
+        return resolve(JSON.parse(postBody))
       }
     })
   })
+  
+  
   return promise
 }
 const handleServer =(req,res) => {
@@ -38,6 +37,7 @@ const handleServer =(req,res) => {
   req.query=querystring.parse(url.split('?')[1]) 
   getPostBody(req).then(postData => {
     req.body=postData
+    
     const blobRouterResult=handleBlobRouter(req)
     if(blobRouterResult){
       blobRouterResult.then(result =>{
@@ -45,7 +45,6 @@ const handleServer =(req,res) => {
       })
     return
     }
-    
     const userRouter=handleUserRouter(req)
     
     if(userRouter){

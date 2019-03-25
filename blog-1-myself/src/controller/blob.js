@@ -3,31 +3,37 @@
 const {exec} = require('../db/mysql')
 const getBlobList=(author)=>{
   if(author==='zhangsan'){
-    const sql="select * from blogs;"
+    const sql="select * from blogs where author='zhangsan';"
     return exec(sql)
-    
-    
-    
-  }else{
-    return new ErrorModel("获取列表失败")
   }
   
 }
 
 const getBlobDetail=(id)=>{
-  return {title:"标题1",content:"内容1"}
+
+  const sql=`select * from blogs where id = '${id}';`
+  return exec(sql)
 }
 
 const newBlob=(obj)=>{
-  return new SuccessModel(obj,'新建博客成功')
+  const author="zhangsan"
+  const d= Date.now()
+
+  
+  const {title,content}=obj
+  const sql=`insert into blogs (title,content,createTime,author) values ('${title}','${content}',${d},'${author}');`
+  return exec(sql)
+  
 }
 
-const updateBlob=(obj)=>{
-  return new SuccessModel(obj,'更新博客成功')
+const updateBlob=(id,obj)=>{
+  const sql=`update blogs set title='${obj.title}',content='${obj.content}' where id='${id}';`
+  return exec(sql)
 }
 
 const delBlob=(id)=>{
-  return new SuccessModel(true,'删除博客成功')
+  const sql=`delete from blogs where id='${id}'`
+  return exec(sql)
 }
 
 

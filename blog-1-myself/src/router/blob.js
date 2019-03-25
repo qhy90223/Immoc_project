@@ -12,13 +12,9 @@ const handleBlobRouter=(req)=>{
   if(method==='GET'&&path==="/api/blog/list"){
       const {author}=req.query
       const getBlobResult=getBlobList(author)
-      console.log(getBlobResult,'getBlobResult');
-      
       return getBlobResult.then((data)=>{
-        console.log(data,'data');
-        
         if(data){
-         return new SuccessModel(JSON.parse(data))
+         return new SuccessModel(data)
         }else{
           return new ErrorModel(data)
         }
@@ -26,17 +22,44 @@ const handleBlobRouter=(req)=>{
   }
   if(method==='GET'&&path==="/api/blog/detail"){
     const id=query.id
-    return getBlobDetail(id)
+    const getBlobDetailResult=getBlobDetail(id)
+    return getBlobDetailResult.then((data) => {
+      if(data){
+        return new SuccessModel(data)
+      }else{
+        return new ErrorModel(data)
+      }
+    })
   }
   if(method==='POST'&&path==="/api/blog/new"){
-    return newBlob({a:3,b:4})
+    const newBlobResult = newBlob(req.body)
+    return newBlobResult.then((data)=>{
+      if(data.affectedRows==1){
+        return new SuccessModel(true,'新建成功')
+      }
+     })
   }
   if(method==='POST'&&path==="/api/blog/update"){
-    return updateBlob({a:5,b:7})
-  }
+    const id=query.id
+    
+    
+    const updateBlobResult = updateBlob(id,req.body)
+    return updateBlobResult.then(data => {
+      if(data.affectedRows==1){
+        return new SuccessModel(true,'更新成功')
+      }
+    })
+   }
   if(method==='GET'&&path==="/api/blog/del"){
     const id=query.id
-    return delBlob(id)
+    const delBlobResult=delBlob(id)
+    return delBlobResult.then(data => {
+      if(data.affectedRows){
+        return new SuccessModel(true,'删除成功')
+      }else{
+        return new ErrorModel('删除失败')
+      }
+    })
   }
   
 } 
