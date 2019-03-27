@@ -41,8 +41,6 @@ const handleBlobRouter=(req)=>{
   }
   if(method==='POST'&&path==="/api/blog/update"){
     const id=query.id
-    
-    
     const updateBlobResult = updateBlob(id,req.body)
     return updateBlobResult.then(data => {
       if(data.affectedRows==1){
