@@ -8,7 +8,7 @@ const  getCookieExpires = () => {
   d.setTime(d.getTime()+24*60*60*1000)
   return d.toGMTString()
 }
-const handleUserRouter = (req,res) => {
+    const handleUserRouter = (req,res) => {
     const method = req.method //GET POST
     //获取博客列表
     // if(method === 'POST'&&req.path==='/api/user/login'){
@@ -27,13 +27,10 @@ const handleUserRouter = (req,res) => {
         const {username,password} = req.body
         const result = login(username,password)
         return result.then(rows =>{
-          
           if(rows.username){
             req.session.username =rows.username
             req.session.realname =rows.realname
             set(req.sessionId,req.session)
-            console.log('req.session is',req.session);
-            
             return new SuccessModel({})
           }else{
             return new ErrorModel('用户名或密码错误')

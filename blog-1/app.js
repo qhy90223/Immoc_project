@@ -2,6 +2,7 @@ const handleBlobRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
 const querystring = require('querystring')
 const {get,set} =require('./src/db/redis')
+const {access} = require('./src/utils/log')
 //session数据
 const  getCookieExpires = () => {
   const d=new Date()
@@ -39,6 +40,8 @@ const getPostData = (req) => {
     return promise
 }
 const serverHandle=(req,res) => {
+    //记录accesslog
+    access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${new Date()}`)
     //设置返回格式
     res.setHeader('Content-type','application/json')
     //获取path
@@ -79,7 +82,6 @@ const serverHandle=(req,res) => {
       needSetCookie=true
       userId=`${Date.now()}_${Math.random()}`
       set(userId,{})
-      
     }
     req.sessionId = userId
     //获取session
@@ -91,7 +93,6 @@ const serverHandle=(req,res) => {
       }else{
         req.session=sessionData
       }
-      console.log('req.session-appjs',req.session);
       return getPostData(req)
     })
     .then(postData => {
@@ -107,17 +108,13 @@ const serverHandle=(req,res) => {
           })
           return
         }
-        
         const userResult=handleUserRouter(req,res)
-
         if(userResult){  
           userResult.then(userData => {
             if(needSetCookie){
               res.setHeader('Set-Cookie',`userid=${userId};path=/;httpOnly;expires=${getCookieExpires()}`)
             }
-            res.end(
-              JSON.stringify(userData)
-            )
+            res.end(JSON.stringify(userData))
           })
          return
         }

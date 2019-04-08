@@ -5,6 +5,7 @@ const {
     updateBlog,
     delBlog
 } = require('../controller/blog')
+const xss =require('xss')
 const {SuccessModel,ErrorModel} = require('../model/resModel')
 const handleBlogRouter = (req,res) => {
     const method = req.method //GET POST
@@ -18,7 +19,16 @@ const handleBlogRouter = (req,res) => {
     
     //获取博客列表
     if(method === 'GET'&&req.path==='/api/blog/list'){
-        const author  = req.query.author || ""
+        let author  = req.query.author || ""
+        if(req.query.isadmin){
+          const loginCheckResult = loginCheck(req)
+          if(loginCheckResult){
+            //未登录
+            return loginCheckResult
+          }
+          //强制查询自己的博客
+          author=req.session.username
+        }
         const keyword = req.query.keyword || ""
         const result= getList(author,keyword)
         return result.then(listData => {
@@ -53,6 +63,7 @@ const handleBlogRouter = (req,res) => {
           //未登录
           return loginCheckResult
         }
+        req.body.author=req.session.username
         const result =updateBlog(id,req.body)
         return result.then(res => {
           if(res){
@@ -70,8 +81,8 @@ const handleBlogRouter = (req,res) => {
           //未登录
           return loginCheckResult
       }
-      
-       req.body.author=req.session.username
+       const id=req.query.id
+       const author=req.session.username
        const result= delBlog(id,author)
        return result.then(res => {
          if(res){
