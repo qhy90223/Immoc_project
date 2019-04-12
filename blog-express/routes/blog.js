@@ -12,6 +12,7 @@ const xss =require('xss')
 const {SuccessModel,ErrorModel} = require('../model/resModel')
 router.get('/list',(req,res,next) => {
         let author  = req.query.author || ""
+        
         if(req.query.isadmin){
           console.log('is admin')
           if(!req.session.username){

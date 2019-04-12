@@ -33,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 const redisClient = require('./db/redis')
 const sessionStore=new RedisStore(redisClient)
+let author1 = '22332'
 app.use(session({
   secret:"Wjiol_8776#",        //加密密室
   cookie:{
@@ -48,6 +49,7 @@ app.use(session({
 // app.use('/users', usersRouter);
 app.use('/api/user',userRouter);
 app.use('/api/blog',blogRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -61,7 +63,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  // res.render('error');
 });
 
 module.exports = app;

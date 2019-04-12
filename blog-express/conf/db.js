@@ -1,4 +1,7 @@
+
+
 const env=process.env.NODE_ENV//环境变量
+
 let MYSQL_CONF 
 let REDIS_CONF
 if(env === 'dev'){

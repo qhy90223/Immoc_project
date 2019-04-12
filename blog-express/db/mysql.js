@@ -1,9 +1,11 @@
+
+
 const mysql = require('mysql')
-const {MYSQL_CONF} = require('../conf/db')
+const { MYSQL_CONF } = require('../conf/db')
 
-
+ 
 //创建对象
-
+let a=process.env.NODE_ENV
 const con = mysql.createConnection(MYSQL_CONF)
 
 //开始连接
