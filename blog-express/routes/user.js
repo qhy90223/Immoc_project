@@ -1,10 +1,10 @@
 var express = require('express')
 var router = express.Router()
-const { login }=require('../controller/user')
+const { login,register,registerCheck}=require('../controller/user')
 const {SuccessModel,ErrorModel} = require('../model/resModel')
+
 router.post('/login',function(req,res,next){
-  const {username,password} =req.body
- 
+        let  {username,password} =req.body
         const result = login(username,password)
         return result.then(rows =>{
           if(rows.username){
@@ -17,6 +17,38 @@ router.post('/login',function(req,res,next){
             res.json(new ErrorModel('用户名或密码错误')) 
           }
         })
+})
+const registerCheckResult = (req,res,next) => {
+  const {username} =req.body
+   result = registerCheck(username)
+  result.then(data=>{
+    if(data.length>0){
+      res.json(
+        new SuccessModel('用户已存在')
+      )
+    }else{
+      next()
+    }
+  })
+
+}
+router.post('/register',registerCheckResult,(req,res,next) => {
+  let {username,password,realname} = req.body
+  
+  const result = register(username,password,realname)
+  result
+  .then(rows => {
+    
+     if(rows.affectedRows>0){
+      res.json(
+        new SuccessModel('注册成功')
+      )
+    }else{
+      res.json(
+        new ErrorModel('注册失败')
+      )
+    }
+  })
 })
 router.get('/login-test',(req,res,next) => {
   

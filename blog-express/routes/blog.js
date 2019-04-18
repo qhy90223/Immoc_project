@@ -5,11 +5,13 @@ const {
   getDetail,
   newBlog,
   updateBlog,
-  delBlog
+  delBlog,
+  
 } = require('../controller/blog')
 const loginCheck=require('../middleware/loginCheck')
 const xss =require('xss')
 const {SuccessModel,ErrorModel} = require('../model/resModel')
+
 router.get('/list',(req,res,next) => {
         let author  = req.query.author || ""
         
@@ -39,7 +41,7 @@ router.get('/detail',function(req,res,next){
   }
   const result = getDetail(id)
   return result.then(data => {
-    res.json(new SuccessModel(data)) 
+    res.json(new SuccessModel(data[0])) 
   })
 })
 router.post('/new',loginCheck,(req,res,next) => {
